@@ -43,6 +43,16 @@ test("Place ship - invalid starting pos", () => {
   expect(board.receiveAttack(5, 5) == 1).toBeTruthy();
 });
 
+test("Place ship - space occupied", () => {
+  const board = new Gameboard();
+  const ship = new Ship(3);
+  const position = { x: 5, y: 5, orientation: "h", ship: ship };
+
+  board.placeShip(position);
+
+  expect(board.placeShip(position) == 1).toBeFalsy();
+});
+
 test("Hits sink ship", () => {
   const board = new Gameboard();
   const ship = new Ship(2);
@@ -61,26 +71,15 @@ test("Invalid hit", () => {
   expect(board.receiveAttack(11, 11)).toBeFalsy();
 });
 
-test("Miss is recorded", () => {
-  const board = new Gameboard();
-  const initialMisses = board.misses.size;
-
-  board.receiveAttack(5, 5);
-
-  expect(initialMisses < board.misses.size).toBe(true);
-});
-
 test("Trigger all sunk state", () => {
   const board = new Gameboard();
-  const ship = new Ship(2);
-  const position = { x: 7, y: 7, orientation: "h", ship: ship };
+  const ship = new Ship(3);
+  const position = { x: 6, y: 6, orientation: "v", ship: ship };
 
   board.placeShip(position);
-  console.log(board.totalHealth);
-  board.receiveAttack(7, 7);
-  board.receiveAttack(8, 7);
+  board.receiveAttack(6, 6);
+  board.receiveAttack(6, 7);
+  board.receiveAttack(6, 8);
 
-  console.log(board.hits.size);
-
-  expect(board.allSunk).toBe(true);
+  expect(board.checkIfAllSunk()).toBe(true);
 });

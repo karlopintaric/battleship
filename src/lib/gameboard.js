@@ -1,10 +1,8 @@
 export default function Gameboard() {
   const board = [];
-  const hits = new Set();
-  const misses = new Set();
+  const shots = [];
 
   let totalHealth = 0;
-  let allSunk = false;
 
   const initBoard = () => {
     for (let i = 0; i < 10; i++) {
@@ -22,12 +20,16 @@ export default function Gameboard() {
     }
 
     const isVertical = orientation === "v";
-    for (let i = 0; i < ship.length; i++) {
-      const newX = isVertical ? x : x + i;
-      const newY = isVertical ? y + i : y;
+    const coordinates = _calculateCoordinates(x, y, isVertical, ship.length);
+    const isOverlap = _checkForOverlap(coordinates);
 
-      board[newX][newY] = ship;
+    if (isOverlap) {
+      return;
     }
+
+    coordinates.forEach(({ newX, newY }) => {
+      board[newX][newY] = ship;
+    });
 
     totalHealth += ship.length;
 
@@ -37,19 +39,40 @@ export default function Gameboard() {
   const receiveAttack = (x, y) => {
     if (_isOutOfBoard(x, y)) return;
 
+    if (getShots().includes(`${x},${y}`)) {
+      return;
+    }
+
     const cell = board[x][y];
     const isHit = cell !== null;
 
+    shots.push({ x, y, isHit });
     if (isHit) {
       cell.hit();
-      hits.add(`${x},${y}`);
 
-      _checkIfAllSunk();
       return 1; // Hit
     }
 
-    misses.add(`${x},${y}`);
     return 2; // Miss
+  };
+
+  const _checkForOverlap = (coordinates) => {
+    const isOverlap = coordinates.some(({ newX, newY }) => board[newX][newY]);
+
+    return isOverlap;
+  };
+
+  const _calculateCoordinates = (x, y, isVertical, length) => {
+    const coordinates = [];
+
+    for (let i = 0; i < length; i++) {
+      const newX = isVertical ? x : x + i;
+      const newY = isVertical ? y + i : y;
+
+      coordinates.push({ newX, newY });
+    }
+
+    return coordinates;
   };
 
   const _isValidPlacement = (x, y, orientation, length) => {
@@ -69,8 +92,16 @@ export default function Gameboard() {
     return x < 0 || x > 9 || y < 0 || y > 9;
   };
 
-  const _checkIfAllSunk = () => {
-    allSunk = hits.size >= totalHealth;
+  const getShots = () => {
+    return shots.map((shot) => `${shot.x},${shot.y}`);
+  };
+
+  const getHits = () => {
+    return shots.filter((shot) => shot.isHit);
+  };
+
+  const checkIfAllSunk = () => {
+    return getHits().length >= totalHealth;
   };
 
   initBoard();
@@ -79,9 +110,6 @@ export default function Gameboard() {
     initBoard,
     placeShip,
     receiveAttack,
-    hits,
-    misses,
-    allSunk,
-    totalHealth,
+    checkIfAllSunk,
   };
 }
