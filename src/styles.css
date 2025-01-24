@@ -1,0 +1,21 @@
+body {
+    --box-bg-color: #1e293b;
+    --text-white: #f9fafb;
+    font-family: sans-serif;
+}
+
+.header {
+    padding: 1rem 5rem;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    
+}
+
+.header > p {
+    margin: auto;
+    background-color: var(--box-bg-color);
+    padding: 1rem 5rem;
+    color: var(--text-white);
+    border-radius: 0.5rem;
+}

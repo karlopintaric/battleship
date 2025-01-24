@@ -14,7 +14,9 @@ export default function Gameboard() {
     }
   };
 
-  const placeShip = ({ x, y, orientation, ship }) => {
+  const placeShip = (ship, position, orientation) => {
+    const { x, y } = position;
+
     if (!_isValidPlacement(x, y, orientation, ship.length)) {
       return;
     }
@@ -104,6 +106,8 @@ export default function Gameboard() {
     return getHits().length >= totalHealth;
   };
 
+  const getBoard = () => board;
+
   initBoard();
 
   return {
@@ -111,5 +115,6 @@ export default function Gameboard() {
     placeShip,
     receiveAttack,
     checkIfAllSunk,
+    getBoard,
   };
 }
