@@ -19,3 +19,17 @@ body {
     color: var(--text-white);
     border-radius: 0.5rem;
 }
+
+.main {
+    margin-top: 100px;
+    display: flex;
+    flex-flow: row;
+    gap: 50px;
+    justify-content: center;
+}
+
+.board-player,
+.board-enemy {
+    display: grid;
+    grid-template: repeat(10, 50px) / repeat(10, 50px);
+}

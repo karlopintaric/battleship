@@ -23,7 +23,7 @@ export default function Player(playerName, type) {
   return {
     receiveAttack: board.receiveAttack,
     placeShip,
-    getBoard: board.getBoard,
+    getBoardAndShots: board.getBoardAndShots,
     checkIfAllSunk: board.checkIfAllSunk,
   };
 }

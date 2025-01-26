@@ -18,7 +18,7 @@ export default function GameController() {
 
     if (cpuPlayer.checkIfAllSunk()) {
       gameStatus = "win";
-      print("Player is the winner");
+      console.log("Player is the winner");
       return;
     }
   };
@@ -32,20 +32,27 @@ export default function GameController() {
 
     if (humanPlayer.checkIfAllSunk()) {
       gameStatus = "lose";
-      print("CPU is the winner");
+      console.log("CPU is the winner");
       return;
     }
   };
 
+  const getBoardAndShots = (playerType) => {
+    const player = playerType === "human" ? humanPlayer : cpuPlayer;
+
+    return player.getBoardAndShots();
+  };
+
   const randomlyHit = () => {
     return {
-      randomX: Math.floor(Math.random * 10),
-      randomY: Math.floor(Math.random * 10),
+      randomX: Math.floor(Math.random() * 10),
+      randomY: Math.floor(Math.random() * 10),
     };
   };
 
   return {
     playRound,
     getGameStatus,
+    getBoardAndShots,
   };
 }
