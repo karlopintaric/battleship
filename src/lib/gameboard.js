@@ -4,7 +4,7 @@ export default function Gameboard() {
 
   let totalHealth = 0;
 
-  const initBoard = () => {
+  const _initBoard = () => {
     for (let i = 0; i < 10; i++) {
       board[i] = [];
 
@@ -108,10 +108,9 @@ export default function Gameboard() {
 
   const getBoard = () => board;
 
-  initBoard();
+  _initBoard();
 
   return {
-    initBoard,
     placeShip,
     receiveAttack,
     checkIfAllSunk,

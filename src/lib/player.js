@@ -1,7 +1,7 @@
 import Gameboard from "./gameboard";
 
 export default function Player(playerName, type) {
-  const board = new Gameboard();
+  const board = Gameboard();
 
   const playerPlaceShip = ({ x, y, orientation, ship }) => {
     board.placeShip(ship, { x, y }, orientation);
@@ -23,6 +23,7 @@ export default function Player(playerName, type) {
   return {
     receiveAttack: board.receiveAttack,
     placeShip,
-    playerName,
+    getBoard: board.getBoard,
+    checkIfAllSunk: board.checkIfAllSunk,
   };
 }
