@@ -1,8 +1,8 @@
 export function attackClickHandler(e, turnFunc) {
-  const selectedRow = parseInt(e.target.dataset.row);
-  const selectedColumn = parseInt(e.target.dataset.column);
+  const selectedRow = e.target.dataset.row;
+  const selectedColumn = e.target.dataset.column;
 
-  if (selectedRow === null || selectedColumn === null) return;
+  if (!selectedRow || !selectedColumn) return;
 
-  turnFunc(selectedRow, selectedColumn);
+  turnFunc(parseInt(selectedRow), parseInt(selectedColumn));
 }

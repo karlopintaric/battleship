@@ -18,8 +18,16 @@ export default function GameController(playerName) {
 
   const switchActivePlayer = () => 1 - activePlayerIndex;
 
-  const updateGameStatus = (status) => {
-    gameStatus = status;
+  const displayResults = (result) => {
+    const resultDialog = document.querySelector("dialog");
+
+    resultDialog.showModal();
+
+    if (result === "win") {
+      resultDialog.textContent = `Congratulations! ${getActivePlayer().name} is the winner!`;
+    } else {
+      resultDialog.textContent = "You lost against the bot!";
+    }
   };
 
   const playTurn = (row, column) => {
@@ -31,17 +39,20 @@ export default function GameController(playerName) {
     renderBoards(activePlayer, enemyPlayer);
 
     if (enemyPlayer.checkIfAllSunk() === true) {
-      updateGameStatus("win");
+      displayResults("win");
       return;
     }
 
     if (enemyPlayer.type !== "human") {
-      setTimeout(() => {
-        playCpuTurn(activePlayer, enemyPlayer);
-      }, 1000);
+      playCpuTurn(activePlayer, enemyPlayer);
+    } else {
+      switchActivePlayer();
+      return;
     }
 
-    switchActivePlayer();
+    if (activePlayer.checkIfAllSunk() === true) {
+      displayResults("lose");
+    }
   };
 
   const playCpuTurn = (humanPlayer, cpuPlayer) => {

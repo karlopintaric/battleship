@@ -35,5 +35,5 @@ export default function renderBoards(activePlayer, enemyPlayer) {
   const enemyBoardDiv = document.querySelector(".board-enemy");
 
   renderSingleBoard(activePlayer, playerBoardDiv, true);
-  renderSingleBoard(enemyPlayer, enemyBoardDiv, false);
+  renderSingleBoard(enemyPlayer, enemyBoardDiv, true);
 }

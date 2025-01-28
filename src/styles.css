@@ -28,6 +28,10 @@ body {
     justify-content: center;
 }
 
+button {
+    cursor: crosshair;
+}
+
 .board-player,
 .board-enemy {
     display: grid;
@@ -40,8 +44,10 @@ body {
 
 .hit {
     background-color: red;
+    pointer-events: none;
 }
 
 .miss {
     background-color: gray;
+    pointer-events: none;
 }
