@@ -33,3 +33,15 @@ body {
     display: grid;
     grid-template: repeat(10, 50px) / repeat(10, 50px);
 }
+
+.ship {
+    background-color: blue;
+}
+
+.hit {
+    background-color: red;
+}
+
+.miss {
+    background-color: gray;
+}

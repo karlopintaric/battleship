@@ -1,8 +1,8 @@
-export default function renderBoard(
-  { board, shots },
-  boardDiv,
-  renderShips = true,
-) {
+function renderSingleBoard(player, boardDiv, renderShips = false) {
+  const board = player.getBoard();
+  const shots = player.getShots();
+
+  boardDiv.textContent = "";
   board.forEach((row, rowId) => {
     row.forEach((cell, colId) => {
       const cellDiv = document.createElement("button");
@@ -28,4 +28,12 @@ export default function renderBoard(
       boardDiv.appendChild(cellDiv);
     });
   });
+}
+
+export default function renderBoards(activePlayer, enemyPlayer) {
+  const playerBoardDiv = document.querySelector(".board-player");
+  const enemyBoardDiv = document.querySelector(".board-enemy");
+
+  renderSingleBoard(activePlayer, playerBoardDiv, true);
+  renderSingleBoard(enemyPlayer, enemyBoardDiv, false);
 }

@@ -1,29 +1,15 @@
 import Gameboard from "./gameboard";
 
-export default function Player(playerName, type) {
+export default function Player(name, type) {
   const board = Gameboard();
 
-  const playerPlaceShip = ({ x, y, orientation, ship }) => {
-    board.placeShip(ship, { x, y }, orientation);
-  };
-
-  const randomPlaceShip = (ship, orientation) => {
-    let shipPlaced = false;
-    while (!shipPlaced) {
-      const randomX = Math.floor(Math.random * 10);
-      const randomY = Math.floor(Math.random * 10);
-
-      shipPlaced =
-        board.placeShip(ship, { randomX, randomY }, orientation) === 1;
-    }
-  };
-
-  const placeShip = type === "cpu" ? randomPlaceShip : playerPlaceShip;
-
   return {
+    name,
+    type,
     receiveAttack: board.receiveAttack,
-    placeShip,
-    getBoardAndShots: board.getBoardAndShots,
+    placeShip: board.placeShip,
+    getBoard: board.getBoard,
+    getShots: board.getShots,
     checkIfAllSunk: board.checkIfAllSunk,
   };
 }

@@ -94,20 +94,17 @@ export default function Gameboard() {
     return x < 0 || x > 9 || y < 0 || y > 9;
   };
 
+  const getShots = () => shots;
+
   const getHits = () => {
-    return shots.filter((shot) => shot.isHit);
+    return getShots().filter((shot) => shot.isHit);
   };
 
   const checkIfAllSunk = () => {
     return getHits().length >= totalHealth;
   };
 
-  const getBoardAndShots = () => {
-    return {
-      board,
-      shots,
-    };
-  };
+  const getBoard = () => board;
 
   _initBoard();
 
@@ -115,6 +112,7 @@ export default function Gameboard() {
     placeShip,
     receiveAttack,
     checkIfAllSunk,
-    getBoardAndShots,
+    getBoard,
+    getShots,
   };
 }
