@@ -12,7 +12,7 @@ test("Place ship - valid", () => {
 test("Place ship - invalid vertical", () => {
   const board = new Gameboard();
   const ship = new Ship(3);
-  const position = { x: 1, y: 9 };
+  const position = { x: 9, y: 1 };
 
   expect(board.placeShip(ship, position, "v")).toBeFalsy();
 });
@@ -20,7 +20,7 @@ test("Place ship - invalid vertical", () => {
 test("Place ship - invalid horizontal", () => {
   const board = new Gameboard();
   const ship = new Ship(3);
-  const position = { x: 9, y: 1 };
+  const position = { x: 1, y: 9 };
 
   expect(board.placeShip(ship, position, "h")).toBeFalsy();
 });
@@ -60,7 +60,7 @@ test("Hits sink ship", () => {
 
   board.placeShip(ship, position, "h");
   board.receiveAttack(7, 7);
-  board.receiveAttack(8, 7);
+  board.receiveAttack(7, 8);
 
   expect(ship.isSunk()).toBe(true);
 });
@@ -78,8 +78,8 @@ test("Trigger all sunk state", () => {
 
   board.placeShip(ship, position, "v");
   board.receiveAttack(6, 6);
-  board.receiveAttack(6, 7);
-  board.receiveAttack(6, 8);
+  board.receiveAttack(7, 6);
+  board.receiveAttack(8, 6);
 
   expect(board.checkIfAllSunk()).toBe(true);
 });

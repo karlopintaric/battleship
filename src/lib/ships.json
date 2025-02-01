@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "class": "Carrier",
+    "length": 5
+  },
+  {
+    "id": 2,
+    "class": "Battleship",
+    "length": 4
+  },
+  {
+    "id": 3,
+    "class": "Cruiser",
+    "length": 3
+  },
+  {
+    "id": 4,
+    "class": "Submarine",
+    "length": 3
+  },
+  {
+    "id": 5,
+    "class": "Destroyer",
+    "length": 2
+  }
+]

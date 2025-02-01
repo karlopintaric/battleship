@@ -1,3 +1,5 @@
+import Ship from "./ship";
+
 export function getRandomCoords() {
   return {
     x: Math.floor(Math.random() * 10),
@@ -5,11 +7,24 @@ export function getRandomCoords() {
   };
 }
 
-export function randomlyPlaceShip({ ship, orientation }, player) {
-  let shipPlaced = false;
-  while (!shipPlaced) {
-    const { x, y } = getRandomCoords();
+function getRandomOrientation() {
+  const randomIndex = Math.floor(Math.random() * 2);
+  const choices = ["h", "v"];
 
-    shipPlaced = player.placeShip(ship, { x, y }, orientation);
-  }
+  return choices[randomIndex];
+}
+
+export function randomlyPlaceShips(ships, player) {
+  ships.forEach((shipData) => {
+    const ship = Ship(shipData.length);
+
+    let shipPlaced;
+    while (!shipPlaced) {
+      shipPlaced = player.placeShip(
+        ship,
+        getRandomCoords(),
+        getRandomOrientation(),
+      );
+    }
+  });
 }

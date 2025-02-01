@@ -68,8 +68,8 @@ export default function Gameboard() {
     const coordinates = [];
 
     for (let i = 0; i < length; i++) {
-      const newX = isVertical ? x : x + i;
-      const newY = isVertical ? y + i : y;
+      const newX = isVertical ? x + i : x;
+      const newY = isVertical ? y : y + i;
 
       coordinates.push({ newX, newY });
     }
@@ -84,9 +84,9 @@ export default function Gameboard() {
 
     switch (orientation) {
       case "v":
-        return y + length < 10;
-      case "h":
         return x + length < 10;
+      case "h":
+        return y + length < 10;
     }
   };
 

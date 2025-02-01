@@ -1,14 +1,26 @@
 import Player from "../lib/player";
-import Ship from "../lib/ship";
-import { randomlyPlaceShip, getRandomCoords } from "../lib/cpuFunctions";
-import renderBoards from "./render";
-import { attackClickHandler } from "./eventHandlers";
+import { getRandomCoords, randomlyPlaceShips } from "../lib/cpuFunctions";
+import { renderShips, renderBoards } from "./render";
+import init_handlers from "./eventHandlers";
+import { ResultModal } from "./resultModal";
+import shipsList from "../lib/ships.json";
 
 export default function GameController(playerName) {
-  const players = [Player(playerName, "human"), Player("BOT", "cpu")];
+  let players;
+  let render;
 
   let gameStatus = "active";
   let activePlayerIndex = 0;
+
+  const resultModal = ResultModal(() => startGame());
+
+  const _init_players = () => {
+    return [Player(playerName, "human"), Player("BOT", "cpu")];
+  };
+
+  const _init_renderer = () => {
+    return () => renderBoards(getActivePlayer(), getEnemyPlayer());
+  };
 
   const getGameStatus = () => gameStatus;
 
@@ -19,15 +31,13 @@ export default function GameController(playerName) {
   const switchActivePlayer = () => 1 - activePlayerIndex;
 
   const displayResults = (result) => {
-    const resultDialog = document.querySelector("dialog");
+    resultModal.showResult(result, getActivePlayer());
+  };
 
-    resultDialog.showModal();
+  const placeShip = (row, column, ship, orientation) => {
+    const activePlayer = getActivePlayer();
 
-    if (result === "win") {
-      resultDialog.textContent = `Congratulations! ${getActivePlayer().name} is the winner!`;
-    } else {
-      resultDialog.textContent = "You lost against the bot!";
-    }
+    return activePlayer.placeShip(ship, { x: row, y: column }, orientation);
   };
 
   const playTurn = (row, column) => {
@@ -36,7 +46,7 @@ export default function GameController(playerName) {
 
     if (!enemyPlayer.receiveAttack(row, column)) return;
 
-    renderBoards(activePlayer, enemyPlayer);
+    render();
 
     if (enemyPlayer.checkIfAllSunk() === true) {
       displayResults("win");
@@ -55,38 +65,33 @@ export default function GameController(playerName) {
     }
   };
 
-  const playCpuTurn = (humanPlayer, cpuPlayer) => {
+  const playCpuTurn = (humanPlayer) => {
     let validCpuAttack;
     while (!validCpuAttack) {
       const { x, y } = getRandomCoords();
       validCpuAttack = humanPlayer.receiveAttack(x, y);
     }
 
-    renderBoards(humanPlayer, cpuPlayer);
+    render();
   };
 
   const startGame = () => {
-    const enemyBoardDiv = document.querySelector(".board-enemy");
+    players = _init_players();
+    render = _init_renderer();
 
-    enemyBoardDiv.addEventListener("click", (e) =>
-      attackClickHandler(e, playTurn),
-    );
-
-    const ships = [
-      { ship: Ship(3), orientation: "v" },
-      { ship: Ship(2), orientation: "h" },
-      { ship: Ship(1), orientation: "h" },
-    ];
-
-    ships.forEach((shipObj) => {
-      players.map((p) => randomlyPlaceShip(shipObj, p));
+    init_handlers({
+      placeShipFunc: placeShip,
+      renderShipFunc: renderShips,
+      turnFunc: playTurn,
+      renderBoardFunc: render,
     });
 
-    renderBoards(getActivePlayer(), getEnemyPlayer());
+    render();
+
+    randomlyPlaceShips(shipsList, getEnemyPlayer());
   };
 
   return {
-    playTurn,
     startGame,
     getGameStatus,
   };

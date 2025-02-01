@@ -1,15 +1,29 @@
 body {
-    --box-bg-color: #1e293b;
-    --text-white: #f9fafb;
+    --box-bg-color: #1e293b; /* Dark blue-gray */
+    --text-white: #f9fafb; /* Off-white */
+    --ship-dark: #1e3a8a; /* Deep Navy Blue */
+    --ship-hover: #172554; /* Almost Black-Blue */
+    --button-sea: #0ea5e9; /* Sea blue */
+    --button-hover: #0284c7; /* Darker sea blue */
+    --button-click: #0369a1; /* Deep ocean blue */
+    --hit-red: #ef4444; /* Bright red */
+    --miss-gray: #6b7280; /* Muted gray */
+    --hover-glow: rgba(14, 165, 233, 0.5); /* Light blue glow */
+
     font-family: sans-serif;
+    margin: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+    background-color: #0f172a; /* Deep navy */
+    color: var(--text-white);
 }
 
+/* HEADER */
 .header {
     padding: 1rem 5rem;
     display: flex;
-    flex-flow: row;
     align-items: center;
-    
+    justify-content: center;
 }
 
 .header > p {
@@ -18,36 +32,122 @@ body {
     padding: 1rem 5rem;
     color: var(--text-white);
     border-radius: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
 }
 
+/* MAIN LAYOUT */
 .main {
-    margin-top: 100px;
     display: flex;
-    flex-flow: row;
-    gap: 50px;
-    justify-content: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: start;
+    gap: 20px;
+    padding: 1rem;
 }
 
+/* BUTTON STYLES */
 button {
-    cursor: crosshair;
+    cursor: pointer;
+    border: none;
+    background-color: var(--button-sea);
+    color: var(--text-white);
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
+button:hover {
+    background-color: var(--button-hover);
+    transform: scale(1.05);
+}
+
+button:active {
+    background-color: var(--button-click);
+    transform: scale(0.95);
+}
+
+/* BOARDS */
 .board-player,
 .board-enemy {
     display: grid;
     grid-template: repeat(10, 50px) / repeat(10, 50px);
+    background-color: var(--box-bg-color);
+    padding: 5px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
 }
 
+/* SHIP STYLES */
 .ship {
-    background-color: blue;
+    background-color: var(--ship-dark);
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+.ship:hover {
+    background-color: var(--ship-hover);
+    transform: scale(1.1);
+}
+
+/* HIT & MISS STYLES */
 .hit {
-    background-color: red;
+    background-color: var(--hit-red);
     pointer-events: none;
 }
 
 .miss {
-    background-color: gray;
+    background-color: var(--miss-gray);
     pointer-events: none;
+    opacity: 0.7;
+}
+
+/* HOVER EFFECT ON GRID CELLS */
+.board-player div:hover,
+.board-enemy div:hover {
+    opacity: 0.8;
+    box-shadow: 0 0 10px var(--hover-glow);
+}
+
+/* SHIP CONTAINER */
+.ship-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* ORIENTATION */
+.ships[data-orientation="h"] {
+    display: flex;
+    height: 60vh;
+    width: 10vw;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.ships[data-orientation="v"] {
+    display: flex;
+    gap: 20px;
+    height: 60vh;
+    width: 10vw;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+/* INDIVIDUAL SHIP PIXEL */
+.ship-pixel {
+    position: absolute;
+    background-color: var(--ship-dark);
+    height: 25px;
+    width: 25px;
+    border: 1px solid var(--box-bg-color);
+    transition: all 0.3s ease;
+}
+
+
+/* ANIMATION */
+@keyframes pop {
+    0% { transform: scale(0.8); opacity: 0.5; }
+    100% { transform: scale(1); opacity: 1; }
 }
